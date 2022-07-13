@@ -16,10 +16,28 @@ namespace Cookie_Master
     public partial class MainForm : Form
     {
 
+        DataBaseFirstCon CookieFirst = new DataBaseFirstCon();
+        
         DataBase CookieDataBase = new DataBase();
 
+        public void CreateAll()
+        {
+            CookieFirst.ConnectionOpen();
+            
+            var dataBaseCreation = $"IF EXISTS (SELECT * FROM sys.databases WHERE name = 'CookieMasterDB') BEGIN DROP DATABASE CookieMasterDB; END; CREATE DATABASE CookieMasterDB";
+            SqlCommand dbCreateQuerry = new SqlCommand(dataBaseCreation, CookieFirst.ConnectionGet());
+            dbCreateQuerry.ExecuteNonQuery();
+
+            var tableCreation = $"USE CookieMasterDB; DROP TABLE IF EXISTS WorkersData; CREATE TABLE WorkersData (wname varchar(50) NOT NULL, wbalance int NOT NULL, isbuyer bit NOT NULL)";
+            SqlCommand tableCreateQuerry = new SqlCommand(tableCreation, CookieFirst.ConnectionGet());
+            tableCreateQuerry.ExecuteNonQuery();
+
+            CookieFirst.ConnectionClose();
+        }
+        
         public MainForm()
         {
+            CreateAll();
             InitializeComponent();
         }
 

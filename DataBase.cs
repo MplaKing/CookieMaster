@@ -8,9 +8,37 @@ using System.Data.SqlClient;
 
 namespace Cookie_Master
 {
+    
+    internal class DataBaseFirstCon
+    {
+        SqlConnection FirstConnection = new SqlConnection(@"Data Source = (local); Integrated Security = true");
+
+        public void ConnectionOpen()
+        {
+            if (FirstConnection.State == System.Data.ConnectionState.Closed)
+            {
+                FirstConnection.Open();
+            }
+        }
+
+        public void ConnectionClose()
+        {
+            if (FirstConnection.State == System.Data.ConnectionState.Open)
+            {
+                FirstConnection.Close();
+            }
+        }
+
+        public SqlConnection ConnectionGet()
+        {
+            return FirstConnection;
+        }
+
+    }
+    
     internal class DataBase
     {
-        SqlConnection CookieSqlConnection = new SqlConnection(@"Data Source = (local); Initial Catalog = CookieMasterDB; Integrated Security = True; User ID = Tester; Password = CookieMasterTest");
+        SqlConnection CookieSqlConnection = new SqlConnection(@"Data Source = (local); Initial Catalog = CookieMasterDB; Integrated Security = True");
 
 
         public void ConnectionOpen()
